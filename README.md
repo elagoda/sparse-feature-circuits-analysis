@@ -1,10 +1,3 @@
-----
-title: "Sparce Feature Circuits"
-author: "Evgeniya Lagoda"
-header-includes:
-   - \usepackage{bbm}
-    
-----
 
 # sparse-feature-circuits-analysis
 
@@ -37,9 +30,9 @@ The article uses model Pythia-70B for most it's experiements, which has the foll
 Typically in a language model, a single neuron activates for a variety of contexts. This is know as superposition, and leads to difficulties interpretation of mechanics of the language model. Recently, researchers started exploring usage of dictionary learning techinies to overcome interpretability difficulties. In dictionary learning, one represents original signal in a higher dimensional space, which has more redundancy that the original space.
 
 An autoencoder is a deep learning model whose training goal is to encode given (vector) repsentation of the data into higher or lower space. In the case of dictionary learning in language models, one uses autoencoders with a hidden layer that is several times higher than the number of tokens, $d_model$. During training of a sparse autoencoder (SAE), one uses loss functions that encourage sparseness of representation, that is, representations that have most (preferably all but one) entries zero. Whenever we have a representation that has only one non-zero entry, it is called a feature. Thus a feature can be identified with a scalar valued function, with a scalar value being the value of activation in that particular non-zero entry. In the article, the SAEs have the following parameters
-$$W_E\in \mathbb R^{d_{SAE}\times d_{model}}, W_D\in \mathbb R^{d_{model}\times d_{SAE}}, \bm b_E\in \mathbb R^{d_{SAE}}, \bm b_D\in \mathbb R^{d_{model}} ,$$
-where the columns of $W_D$ are enforced to be unit vectors. Given an input representation $x\in \mathbb R^{d_{model}}$, the SAE representations are computed via
-$$f(\bm x)=[f_1(\bm x), \dots, f_{d_{SAE}}(\bm x)]=W_E(\bm x-\bm b_D)+ \bm b_E $$.
+$$W_E\in \mathbb R^{d_{SAE}\times d_{model}}, W_D\in \mathbb R^{d_{model}\times d_{SAE}}, \mathbf{b}_E\in \mathbb R^{d_{SAE}}, \mathbf{b}_D\in \mathbb R^{d_{model}} ,$$
+where the columns of $W_D$ are enforced to be unit vectors. Given an input representation $\mathbf{x}\in \mathbb R^{d_{model}}$, the SAE representations are computed via
+$$f(\mathbf{x})=[f_1(\mathbf{x}), \dots, f_{d_{SAE}}(\mathbf{x})]=W_E(\mathbf{x}-\mathbf{b}_D)+ \mathbf{b}_E $$.
 
 
 
