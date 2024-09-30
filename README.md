@@ -71,7 +71,14 @@ We the precise definition of IE, we a ready to define what is meant in the artic
 
 Set some thresholds $T_N$ and $T_E$ for filtering nodes and edges, respectively. The authors of the article typically used $T_N=0.1$ and $T_E=0.01$ in their experiments. Whether one has pairs of datapoints $(x_{clean}, x_{patch})$ or single data points $x_{clean}$ in a dataset $D$, compute IE for each pair or single data points. In case of paired, templatic data, authors suggest to average the IE of each node or edge. In case of non-templatic data, the IE is summed for each node or edge. Filter the resulting mean or summed IE according to the thresholds $T_N$ and $T_E$. The resulting subgraph induced from the computational graph $G$ is what is meant by a circuit $C$.
 
-To evaluate the quality of the circuits the authors found via this method, they used the following criterions: interpretability, faithfulness, and completeness. Interpretability was evaluated by crowdworkers (volunteers from ARENA slack channel). Fairthfulness was exaluted via the following formula
+To evaluate the quality of the circuits the authors found via this method, they used the following criterions: interpretability, faithfulness, and completeness. Interpretability was evaluated by crowdworkers (volunteers from ARENA slack channel). Fairthfulness $F(C)$ was evaluated via the following formula
 
-$\dfrac{m(C} - m(\empty)}{m(G} - m(\empty)}$
+$F(C)=\dfrac{m(C) - m(\empty)}{m(G) - m(\empty)}$, 
 
+where for a subgraph $H\subseteq G$ of a full computational graph $G$ of the model, the value $m(H)$ is the average of the metric $m$ computed over each data point in $D$ with all activations outside of the nodes of $H$ (and their downstream nodes$ set to their average value on $D$ (**mean ablated**). In the above formula for $F(C)$, the subsgraph $\empty$ is the empty subgraph (that is, every node is mean ablated).
+
+Completeness $K(C)$ is computed via the following formula
+
+$K(C)=\dfrac{m(G\C) - m(\empty)}{m(G) - m(\empty)}$, 
+
+where $G\C$ stands for the graph induced on the complement of the nodes of $C$ in $G$.
