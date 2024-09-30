@@ -29,18 +29,17 @@ The article uses model Pythia-70B for most it's experiements, which has the foll
 
 Typically in a language model, a single neuron activates for a variety of contexts. This is know as superposition, and leads to difficulties interpretation of mechanics of the language model. Recently, researchers started exploring usage of dictionary learning techinies to overcome interpretability difficulties. In dictionary learning, one represents original signal in a higher dimensional space, which has more redundancy that the original space.
 
-An autoencoder is a deep learning model whose training goal is to encode given (vector) repsentation of the data into higher or lower space. In the case of dictionary learning in language models, one uses autoencoders with a hidden layer that is several times higher than the number of tokens, $d_model$. During training of a sparse autoencoder (SAE), one uses loss functions that encourage sparseness of representation, that is, representations that have most (preferably all but one) entries zero. Whenever we have a representation that has only one non-zero entry, it is called a feature. Thus a feature can be identified with a scalar valued function, with a scalar value being the value of activation in that particular non-zero entry. In the article, the SAEs have the following parameters
+An autoencoder is a deep learning model whose training goal is to encode given (vector) repsentation of the data into higher or lower space. In the case of dictionary learning in language models, one uses autoencoders with a hidden layer that is several times higher than the number of tokens, $d_model$. During training of a sparse autoencoder (SAE), one uses loss functions that encourage sparseness of representation, that is, representations that have most (preferably all but one) entries zero. Whenever we have a representation that has only one non-zero entry, it is called a feature. Thus a feature can be identified with a particular neuron of a SAE hidden layer and, at the same time, with a scalar valued function, with a scalar value being the value of activation in that particular non-zero entry. In the article, the SAEs have the following parameters
 
-$$ W_E \in {\mathbb{R}}^{d_{SAE}\times d_{model}}$$, $$W_D \in {\mathbb{R}}^{d_{model}\times d_{SAE}}$$, $${\mathbf{b})_E \in {\mathbb{R}}^{d_{SAE}}$$, $${\mathbf{b}}_D \in {\mathbb{R}}^{d_{model}}$$,
+$W_E \in {\mathbb{R}}^{d_{SAE}\times d_{model}}$, $W_D \in {\mathbb{R}}^{d_{model}\times d_{SAE}}$, $b_{E} \in \mathbb{R}^{d_{SAE}}$, $b_{D} \in {\mathbb{R}}^{d_{model}}$,
 
 where the columns of $W_D$ are enforced to be unit vectors. Given an input representation $\mathbf{x}\in \mathbb R^{d_{model}}$, the SAE representations are computed via
 
-$$f(\mathbf{x})=\[f_1(\mathbf{x}), \dots, f_{d_{SAE}}(\mathbf{x})\]=W_E(\mathbf{x}-\mathbf{b}_D)+ \mathbf{b}_E $$.
+$f(\mathbf{x})=\[f_1(\mathbf{x}), \dots, f_{d_{SAE}}(\mathbf{x})\]=W_E(\mathbf{x}-\mathbf{b}_D)+ \mathbf{b}_E $. From a given SAE representation $f(\mathbf{x})$, the reconstruction is then defined as 
 
-
-
+$\hat {\mathbf x} = W_D f(\mathbf{x}) + \mathbf b_D$. The errors of reconstruction $\epsilon (\mathbf x)$ are defined as $\epsilon (\mathbf x) = \mathbf x- \hat {\mathbf x}$.
 
 Sparce autoencoders are typically trained on the representations obtained after attention block, mlp block, or at a particular index of residual stream. 
 
-Features in different 
+Activations in features in earlier layer of the model impact activations in features in later, forming computational graph $G$ of the model. For a given context, some features are more impactful for each other, and, in that case, it is said that these features together with connecting them edges of the computational graph $G$, form a circuit. What is meant precisely by "impactful" varies depending on the interest of the researchers. We will make it precise what is meant by the circuit by the authors of the article later in this text.
 
