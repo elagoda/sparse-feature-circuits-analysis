@@ -64,3 +64,14 @@ $IE(m; e; x_{clean}, x_{patch}) =  m(x_{clean}| do(d=d(x_{clean}|do(u=u_{patch})
 
 where $do(d=d(x_{clean}|do(u=u_{patch}))$ means setting the value at $d$ to the value of activation one gets by setting $u$ to the value $u_{patch}$ (and the rest of the activations not downstream of $d$ are set to the activations one gets from the forward pass with $x_{clean}$). In the case when $e$ is an edge between two indices of residual stream, one modifies this definition to substract the impact of edges that come from alternative paths between $u$ and $d$ (via attention and MLP layers$. This definition, again, needs to be approximated to be efficient in computations and, similarly to the definition for nodes, it can be modified for use when there is only one input $x_{clean}$ instead of a pair.
 
+
+# Sparse Feature Circuits
+
+We the precise definition of IE, we a ready to define what is meant in the article by (sparse) feature circuits. That is, we describe here how they are computed by the authors of the article.
+
+Set some thresholds $T_N$ and $T_E$ for filtering nodes and edges, respectively. The authors of the article typically used $T_N=0.1$ and $T_E=0.01$ in their experiments. Whether one has pairs of datapoints $(x_{clean}, x_{patch})$ or single data points $x_{clean}$ in a dataset $D$, compute IE for each pair or single data points. In case of paired, templatic data, authors suggest to average the IE of each node or edge. In case of non-templatic data, the IE is summed for each node or edge. Filter the resulting mean or summed IE according to the thresholds $T_N$ and $T_E$. The resulting subgraph induced from the computational graph $G$ is what is meant by a circuit $C$.
+
+To evaluate the quality of the circuits the authors found via this method, they used the following criterions: interpretability, faithfulness, and completeness. Interpretability was evaluated by crowdworkers (volunteers from ARENA slack channel). Fairthfulness was exaluted via the following formula
+
+$\dfrac{m(C} - m(\empty)}{m(G} - m(\empty)}$
+
