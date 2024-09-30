@@ -31,11 +31,11 @@ Typically in a language model, a single neuron activates for a variety of contex
 
 An autoencoder is a deep learning model whose training goal is to encode given (vector) repsentation of the data into higher or lower space. In the case of dictionary learning in language models, one uses autoencoders with a hidden layer that is several times higher than the number of tokens, $d_model$. During training of a sparse autoencoder (SAE), one uses loss functions that encourage sparseness of representation, that is, representations that have most (preferably all but one) entries zero. Whenever we have a representation that has only one non-zero entry, it is called a feature. Thus a feature can be identified with a scalar valued function, with a scalar value being the value of activation in that particular non-zero entry. In the article, the SAEs have the following parameters
 
-$$ W_En\in \mathbb{R}^{d_{SAE}\times d_{model}}$$, $$W_D \in \mathbb{R}^{d_{model}\times d_{SAE}}$$, $$\mathbf{b}_E \in \mathbb{R}^{d_{SAE}}$$, $$\mathbf{b}_D \in \mathbb{R}^{d_{model}}$$,
+$$ W_E \in {\mathbb{R}}^{d_{SAE}\times d_{model}}$$, $$W_D \in {\mathbb{R}}^{d_{model}\times d_{SAE}}$$, $${\mathbf{b})_E \in {\mathbb{R}}^{d_{SAE}}$$, $${\mathbf{b}}_D \in {\mathbb{R}}^{d_{model}}$$,
 
 where the columns of $W_D$ are enforced to be unit vectors. Given an input representation $\mathbf{x}\in \mathbb R^{d_{model}}$, the SAE representations are computed via
 
-$$f(\mathbf{x})=[f_1(\mathbf{x}), \dots, f_{d_{SAE}}(\mathbf{x})]=W_E(\mathbf{x}-\mathbf{b}_D)+ \mathbf{b}_E $$.
+$$f(\mathbf{x})=\[f_1(\mathbf{x}), \dots, f_{d_{SAE}}(\mathbf{x})\]=W_E(\mathbf{x}-\mathbf{b}_D)+ \mathbf{b}_E $$.
 
 
 
