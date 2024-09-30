@@ -37,9 +37,23 @@ where the columns of $W_D$ are enforced to be unit vectors. Given an input repre
 
 $f(\mathbf{x})=\[f_1(\mathbf{x}), \dots, f_{d_{SAE}}(\mathbf{x})\]=W_E(\mathbf{x}-\mathbf{b}_D)+ \mathbf{b}_E $. From a given SAE representation $f(\mathbf{x})$, the reconstruction is then defined as 
 
-$\hat {\mathbf x} = W_D f(\mathbf{x}) + \mathbf b_D$. The errors of reconstruction $\epsilon (\mathbf x)$ are defined as $\epsilon (\mathbf x) = \mathbf x- \hat {\mathbf x}$.
+$\hat {\mathbf x} = W_D f(\mathbf{x}) + \mathbf b_D$. The errors of reconstruction $\epsilon (\mathbf x)$ are defined as $\epsilon (\mathbf x) = \mathbf x- \hat {\mathbf x}$. 
 
 Sparce autoencoders are typically trained on the representations obtained after attention block, mlp block, or at a particular index of residual stream. 
 
-Activations in features in earlier layer of the model impact activations in features in later, forming computational graph $G$ of the model. For a given context, some features are more impactful for each other, and, in that case, it is said that these features together with connecting them edges of the computational graph $G$, form a circuit. What is meant precisely by "impactful" varies depending on the interest of the researchers. We will make it precise what is meant by the circuit by the authors of the article later in this text.
+Activations in features in earlier layer of the model impact activations in features in later, forming computational graph $G$ of the model. For the purposes of the article, reconstruction errors $\epsilon (\mathbf x)$ are also viewed as nodes of $G$.  For a given context, some features are more impactful for each other, and, in that case, it is said that these features together with connecting them edges of the computational graph $G$, form a circuit. What is meant precisely by "impactful" varies depending on the interest of the researchers. To make precise what is meant by circuits by the authors of the given article, we need to define indirect effect of features and edges. 
+
+## Indirect Effect
+Indirrect Effect (IE) of a node $u$ in a computational graph is a metric that captures impact of change in the amount of activation in $u$ on a fixed performance metric $m$ of a model. Similarly, IE of an edge $e$ between upstream node $u$ and a downstream node $d$ captures the impact of $e$ on the performance metric $m$. More precisely, suppose we are given a pair of inputs $(x_{clean}, x_{patch})$ from the dataset $D$, we define IE for node $u$ as  
+
+$IE(m; u; x_{clean}, x_{[patch} ) = m(x_{clean}| do(u=u_{patch})) - m(x_{clean})$, 
+
+where $u_{clean} \in \mathbb R$ is the value $u$ takes on $x_{clean}$, $u_{patch} \in mathbb R$ is the value $u$ takes on $x_{patch}$, and $m(x_{clean}| do(u=u_{patch}))$ denotes the value of the metric on $x_{clean}$ with the value at $u$ modified to be $u_{patch}$ instead of $u_{clean}$. The type of modification that happens in  $m(x_{clean}| do(u=u_{patch}))$, that is, when we change value at a particular node, is called activation patching. Since changing value at a particular node impacts activaltion values at all nodes downstream from it, this cannot be computed in effiently. As a way to overcome this inefficiency, one can approximate activation patching with various methods. The authors of the article employ two methods approximation of $IE$ in their experiments. One of them is via what is known in the literature as attrubution patching.
+
+The above definition can be also modified for the case when there is only one inpute $x_{clean}$ instead of a pair. In this case, we can compare the clean activation $u_{clean}$
+ against setting the value at that particular node to zero, that is, we compute $m(x_{clean}| do(u=0)) - m(x_{clean})$.
+ 
+For an edge $e$ between upstream node $u$ and downstream node $d$, the IE is defined as 
+
+$IE(m; e; x_{clean}, x_{patch})$
 
