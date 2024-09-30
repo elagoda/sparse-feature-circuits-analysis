@@ -1,7 +1,7 @@
 
 # sparse-feature-circuits-analysis
 
-This project is done as a part of AI Safety Fundamentals Alignment Course at BlueDot. The larger goal of this project is to analyse the result of the paper [Sparse Feature Circuits: Discovering and Editing Interpretable Causal Graphs in Language Models](https://arxiv.org/abs/2403.19647) by Samuel Marks et. al. and run additional experiements using the experiements of this paper as a base. Currently, this project only contains the explanation of ideas and results of the paper. The paper is interesting from AI Safety research perspective because it proposes methods for feature circuit discovery and proposes techniques for removing unintended behaviours in language models. The project intends to build on this paper for mechanistic interpretability research.
+This project is done as a part of AI Safety Fundamentals Alignment Course at BlueDot. The larger goal of this project is to analyse the result of the paper [Sparse Feature Circuits: Discovering and Editing Interpretable Causal Graphs in Language Models](https://arxiv.org/abs/2403.19647) by Samuel Marks et. al. and run additional experiements using the experiements of this paper as a base. Currently, this project only contains the (brief) explanation of ideas and results of the paper. The paper is interesting from AI Safety research perspective because it proposes methods for feature circuit discovery and proposes techniques for removing unintended behaviours in language models. This project intends to build on this paper for mechanistic interpretability research.
 
 # Terminology
 The following terminology is used in the paper and is defined in this post.
@@ -15,9 +15,9 @@ The following terminology is used in the paper and is defined in this post.
  - [attribution patching](#indirect-effect)
  - [indirrect effect (IE)](#indirect-effect)
  - criterions to evaluate the discovered circuits:
-    - interpretability
-    - faithfulness
-    - completeness
+    - [interpretability](#criterions-of-circuit-performance)
+    - [faithfulness](#criterions-of-circuit-performance)
+    - [completeness](#criterions-of-circuit-performance)
 
 
 # Background on Language Models and Sparse Autoencoders
@@ -51,7 +51,7 @@ where $u_{clean} \in \mathbb R$ is the value $u$ takes on $x_{clean}$, $u_{patch
 
 $m(x_{clean}| do(u=u_{patch}))$,
 
-that is, when we change value at a particular node, is called **activation patching**. Since changing value at a particular node impacts activaltion values at all nodes downstream from it, this cannot be computed in effiently. As a way to overcome this inefficiency, one can approximate activation patching with various methods. The authors of the article employ two methods approximation of $IE$ in their experiments. One of them is via what is known in the literature as **attrubution patching**.
+that is, when we change value at a particular node, is called **activation patching**. Since changing value at a particular node impacts activaltion values at all nodes downstream from it, this cannot be computed in effiently. As a way to overcome this inefficiency, one can approximate activation patching with various methods. The authors of the article employ two methods approximation of $IE$ in their experiments. One of them is via what is known in the literature as **attribution patching**.
 
 The above definition can be also modified for the case when there is only one inpute $x_{clean}$ instead of a pair. In this case, we can compare the clean activation $u_{clean}$
  against setting the value at that particular node to zero (**zero-ablated**), that is, we compute 
@@ -71,14 +71,34 @@ We the precise definition of IE, we a ready to define what is meant in the artic
 
 Set some thresholds $T_N$ and $T_E$ for filtering nodes and edges, respectively. The authors of the article typically used $T_N=0.1$ and $T_E=0.01$ in their experiments. Whether one has pairs of datapoints $(x_{clean}, x_{patch})$ or single data points $x_{clean}$ in a dataset $D$, compute IE for each pair or single data points. In case of paired, templatic data, authors suggest to average the IE of each node or edge. In case of non-templatic data, the IE is summed for each node or edge. Filter the resulting mean or summed IE according to the thresholds $T_N$ and $T_E$. The resulting subgraph induced from the computational graph $G$ is what is meant by a circuit $C$.
 
-To evaluate the quality of the circuits the authors found via this method, they used the following criterions: interpretability, faithfulness, and completeness. Interpretability was evaluated by crowdworkers (volunteers from ARENA slack channel). Fairthfulness $F(C)$ was evaluated via the following formula
+
+## Criterions of Circuit Performance
+
+To evaluate the quality of the circuits the authors found via this method, they used the following criterions: interpretability, faithfulness, and completeness. **Interpretability** was evaluated by crowdworkers (volunteers from ARENA slack channel). 
+
+**Fairthfulness** $F(C)$ was evaluated via the following formula
 
 $F(C)=\dfrac{m(C) - m(\emptyset)}{m(G) - m(\emptyset)}$, 
 
 where for a subgraph $H\subseteq G$ of a full computational graph $G$ of the model, the value $m(H)$ is the average of the metric $m$ computed over each data point in $D$ with all activations outside of the nodes of $H$ (and their downstream nodes$ set to their average value on $D$ (**mean ablated**). In the above formula for $F(C)$, the subsgraph $\emptyset$ is the empty subgraph (that is, every node is mean ablated).
 
-Completeness $K(C)$ is computed via the following formula
+**Completeness** $K(C)$ is computed via the following formula
 
 $K(C)=\dfrac{m(G\backslash C) - m(\emptyset)}{m(G) - m(\emptyset)}$, 
 
 where $G\backslash C$ stands for the graph induced on the complement of the nodes of $C$ in $G$.
+
+# Using circuits to remove unintended signal
+
+The authors use [Bias in Bios dataset](https://github.com/Microsoft/biosbias) to train a LM based classifier predicting profession based biographical description. They intentionally trained the model on a biased subset of the dataset where all professors where male and all nurses where female. Then the used the above methodology (the zero-ablation variant) to detect the circuit in the model that is responsible for the classifier accuracy on the training set. By manually inspecting each feature in the circuit, they determined the nodes that are gender relevant. The circuit induced on these nodes formed the final circuit of interest $C$ that is deemed to be reponsible for the bias in the classifier predictions. Then they zero ablated this curcuit and finetuned the model on the training (biased) dataset. After that, they evaluated the model performance on the balanced test set. The model performed comparably to the model trained right away on the balanced data.
+
+# Unsupervised circuit discovery
+
+ The authors propose a method for authomated circuit discovery. This can be done in two steps
+ - given a dataset $D$, cluster elements of the dataset based on the SAE representations (concatenate representations for different layers and modules of the LM).
+ - for a given cluser, use zero-ablation variant of the technique to discover circuit that is most active on a given cluster.
+
+The authors provide make the autodetected circuits available [online](https://feature-circuits.xyz) : one can inspect the visual representation of a circuit of a cluster and download the contexts of the cluster. The trained sparse autoencoders are also available for examination in [neuropedia](https://www.neuronpedia.org/p70d-sm).
+
+# Future work
+Due to time constraints, this presentation is much more consise than I originally intended it to be, so in the future, I will provide more details in this writeup as well as additional (to the examples what the authors provided) examinations of the circuits.
