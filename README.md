@@ -1,3 +1,11 @@
+---
+title: "Sparce Feature Circuits"
+author: "Evgeniya Lagoda"
+header-includes:
+   - \usepackage{bbm}
+    
+---
+
 # sparse-feature-circuits-analysis
 
 This project is done as a part of AI Safety Fundamentals Alignment Course at BlueDot. The larger goal of this project is to analyse the result of the paper [Sparse Feature Circuits: Discovering and Editing Interpretable Causal Graphs in Language Models](https://arxiv.org/abs/2403.19647) by Samuel Marks et. al. and run experiements using the experiements of this paper as a base. Currently, this project only contains the explanation of ideas and results of the paper. The paper is interesting from AI Safety research perspective because it proposes methods for feature circuit discovery and proposes techniques for removing unintended behaviours in language models.
@@ -32,6 +40,8 @@ An autoencoder is a deep learning model whose training goal is to encode given (
 $$W_E\in \mathbb R^{d_{SAE}\times d_{model}}, W_D\in \mathbb R^{d_{model}\times d_{SAE}}, \pmb b_E\in \mathbb R^{d_{SAE}}, \pmb b_D\in \mathbb R^{d_{model}} ,$$
 where the columns of $W_D$ are enforced to be unit vectors. Given an input representation $x\in \mathbb R^{d_{model}}, the SAE representations are computed via
 $$f(\pmb x)=[f_1(\pmb x), \dots, f_d_{SAE}(\pmb x)]=W_E(\pmb x-\pmb b_D)+ \pmb b_E $$.
+
+
 
 
 Sparce autoencoders are typically trained on the representations obtained after attention block, mlp block, or at a particular index of residual stream. 
