@@ -48,12 +48,20 @@ Indirrect Effect (IE) of a node $u$ in a computational graph is a metric that ca
 
 $IE(m; u; x_{clean}, x_{[patch} ) = m(x_{clean}| do(u=u_{patch})) - m(x_{clean})$, 
 
-where $u_{clean} \in \mathbb R$ is the value $u$ takes on $x_{clean}$, $u_{patch} \in mathbb R$ is the value $u$ takes on $x_{patch}$, and $m(x_{clean}| do(u=u_{patch}))$ denotes the value of the metric on $x_{clean}$ with the value at $u$ modified to be $u_{patch}$ instead of $u_{clean}$. The type of modification that happens in  $m(x_{clean}| do(u=u_{patch}))$, that is, when we change value at a particular node, is called activation patching. Since changing value at a particular node impacts activaltion values at all nodes downstream from it, this cannot be computed in effiently. As a way to overcome this inefficiency, one can approximate activation patching with various methods. The authors of the article employ two methods approximation of $IE$ in their experiments. One of them is via what is known in the literature as attrubution patching.
+where $u_{clean} \in \mathbb R$ is the value $u$ takes on $x_{clean}$, $u_{patch} \in mathbb R$ is the value $u$ takes on $x_{patch}$, and $m(x_{clean}| do(u=u_{patch}))$ denotes the value of the metric on $x_{clean}$ with the value at $u$ modified to be $u_{patch}$ instead of $u_{clean}$. The type of modification that happens in  
+
+$m(x_{clean}| do(u=u_{patch}))$,
+
+that is, when we change value at a particular node, is called activation patching. Since changing value at a particular node impacts activaltion values at all nodes downstream from it, this cannot be computed in effiently. As a way to overcome this inefficiency, one can approximate activation patching with various methods. The authors of the article employ two methods approximation of $IE$ in their experiments. One of them is via what is known in the literature as attrubution patching.
 
 The above definition can be also modified for the case when there is only one inpute $x_{clean}$ instead of a pair. In this case, we can compare the clean activation $u_{clean}$
- against setting the value at that particular node to zero, that is, we compute $m(x_{clean}| do(u=0)) - m(x_{clean})$.
+ against setting the value at that particular node to zero, that is, we compute 
+ 
+ $m(x_{clean}| do(u=0)) - m(x_{clean})$.
  
 For an edge $e$ between upstream node $u$ and downstream node $d$, the IE is defined as 
 
-$IE(m; e; x_{clean}, x_{patch})$
+$IE(m; e; x_{clean}, x_{patch}) =  m(x_{clean}| do(d=d(x_{clean}|do(u=u_{patch}))) - m(x_{clean})$,
+
+where $do(d=d(x_{clean}|do(u=u_{patch}))$ means setting the value at $d$ to the value of activation one gets by setting $u$ to the value $u_{patch}$ (and the rest of the activations not downstream of $d$ are set to the activations one gets from the forward pass with $x_{clean}$). In the case when $e$ is an edge between two indices of residual stream, one modifies this definition to substract the impact of edges that come from alternative paths between $u$ and $d$ (via attention and MLP layers$. This definition, again, needs to be approximated to be efficient in computations and, similarly to the definition for nodes, it can be modified for use when there is only one input $x_{clean}$ instead of a pair.
 
