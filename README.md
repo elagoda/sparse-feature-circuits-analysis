@@ -73,12 +73,12 @@ Set some thresholds $T_N$ and $T_E$ for filtering nodes and edges, respectively.
 
 To evaluate the quality of the circuits the authors found via this method, they used the following criterions: interpretability, faithfulness, and completeness. Interpretability was evaluated by crowdworkers (volunteers from ARENA slack channel). Fairthfulness $F(C)$ was evaluated via the following formula
 
-$F(C)=\dfrac{m(C) - m(\empty)}{m(G) - m(\empty)}$, 
+$F(C)=\dfrac{m(C) - m(\emptyset)}{m(G) - m(\emptyset)}$, 
 
-where for a subgraph $H\subseteq G$ of a full computational graph $G$ of the model, the value $m(H)$ is the average of the metric $m$ computed over each data point in $D$ with all activations outside of the nodes of $H$ (and their downstream nodes$ set to their average value on $D$ (**mean ablated**). In the above formula for $F(C)$, the subsgraph $\empty$ is the empty subgraph (that is, every node is mean ablated).
+where for a subgraph $H\subseteq G$ of a full computational graph $G$ of the model, the value $m(H)$ is the average of the metric $m$ computed over each data point in $D$ with all activations outside of the nodes of $H$ (and their downstream nodes$ set to their average value on $D$ (**mean ablated**). In the above formula for $F(C)$, the subsgraph $\emptyset$ is the empty subgraph (that is, every node is mean ablated).
 
 Completeness $K(C)$ is computed via the following formula
 
-$K(C)=\dfrac{m(G\C) - m(\empty)}{m(G) - m(\empty)}$, 
+$K(C)=\dfrac{m(G\backslash C) - m(\emptyset)}{m(G) - m(\emptyset)}$, 
 
-where $G\C$ stands for the graph induced on the complement of the nodes of $C$ in $G$.
+where $G\backslash C$ stands for the graph induced on the complement of the nodes of $C$ in $G$.
