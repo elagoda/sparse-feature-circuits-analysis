@@ -22,9 +22,10 @@ The following terminology is used in the paper and is defined in this post.
 
 # Background on Language Models and Sparse Autoencoders
 
-A transformer-type **language models** (LM) has the following structure.
+A transformer-type **language models** (LM) has the following structure.(this will be updated in the future)
 
-The article uses model **Pythia-70B** for most it's experiements, which has the following architecture. 
+The article uses model **Pythia-70M** for most it's experiements, which has the following architecture. 
+![Pythia-70M](/presentation_assets/pythia-70m.png)
 
 Typically in a language model, a single neuron activates for a variety of contexts. This is known as **superposition**, and leads to difficulties interpretation of mechanics of the language model. Recently, researchers started exploring usage of dictionary learning techinies to overcome interpretability difficulties. In **dictionary learning**, one represents original signal in a higher dimensional space, which has more redundancy that the original space.
 
