@@ -4,17 +4,16 @@
 This project is done as a part of AI Safety Fundamentals Alignment Course at BlueDot. The larger goal of this project is to analyse the result of the paper [Sparse Feature Circuits: Discovering and Editing Interpretable Causal Graphs in Language Models](https://arxiv.org/abs/2403.19647) by Samuel Marks et. al. and run experiements using the experiements of this paper as a base. Currently, this project only contains the explanation of ideas and results of the paper. The paper is interesting from AI Safety research perspective because it proposes methods for feature circuit discovery and proposes techniques for removing unintended behaviours in language models.
 
 # Terminology
-The following terminology is used in the paper and is defined in this post. In this section we gather the hyperlinks to the definitions.
+The following terminology is used in the paper and is defined in this post.
 
- - laguage model Pythia-70M
- - feature
- - feature circuit
- - dictinary learning
- - sparce autoencoder
- - 
- - activation patching
- - attribution patching
- - indirrect effect (IE)
+ - [laguage model Pythia-70M](#background-on-language-models-and-sparse-autoencoders)
+ - [feature](#background-on-language-models-and-sparse-autoencoders)
+ - [feature circuit](#background-on-language-models-and-sparse-autoencoders)
+ - [dictionary learning](#background-on-language-models-and-sparse-autoencoders)
+ - [sparce autoencoder](#background-on-language-models-and-sparse-autoencoders)
+ - [activation patching](#indirect-effect)
+ - [attribution patching](#indirect-effect)
+ - [indirrect effect (IE)](#indirect-effect)
  - criterions to evaluate the discovered circuits:
     - interpretability
     - faithfulness
