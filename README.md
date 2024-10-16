@@ -48,7 +48,7 @@ Activations in features in earlier layer of the model impact activations in feat
 
 $IE(m; u; x_{clean}, x_{[patch} ) = m(x_{clean}| do(u=u_{patch})) - m(x_{clean})$, 
 
-where $u_{clean} \in \mathbb R$ is the value $u$ takes on $x_{clean}$, $u_{patch} \in mathbb R$ is the value $u$ takes on $x_{patch}$, and $m(x_{clean}| do(u=u_{patch}))$ denotes the value of the metric on $x_{clean}$ with the value at $u$ modified to be $u_{patch}$ instead of $u_{clean}$. The type of modification that happens in  
+where value $u_{clean} \in \mathbb R$ is the value $u$ takes on $x_{clean}$, value $u_{patch} \in \mathbb R$ is the value $u$ takes on $x_{patch}$, and $m(x_{clean}| do(u=u_{patch}))$ denotes the value of the metric on $x_{clean}$ with the value at $u$ modified to be $u_{patch}$ instead of $u_{clean}$. The type of modification that happens in  
 
 $m(x_{clean}| do(u=u_{patch}))$,
 
